@@ -1,9 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import './App.css';
-import {Button} from './components/Button/Button';
-import {CounterDisplay} from './components/CounterDisplay/CounterDisplay';
-import {ValueEditor} from './components/ValueEditor/ValueEditor';
-import {Counter} from './components/Counter/Counter';
+import {HashRouter, NavLink, Route} from 'react-router-dom';
+import {VariantOne} from './VariantOne';
+import {VariantTwo} from './VariantTwo';
+
+export type CounterVariantType = 'ONE' | 'TWO';
 
 function App() {
     const [startCounter, setStartCounter] = useState<number>(0);
@@ -38,34 +39,47 @@ function App() {
 
 
     return (
-        <div className="App">
-            <div className="App-header">
-                <div className="wrapper-block">
-                    <ValueEditor startValue={startValue}
-                                 error={error}
-                                 setStartValue={setStartValue}
-                                 editMode={editMode}
-                                 endCounter={endCounter}
-                                 setStartCounter={setStartCounter}
-                                 setEditMode={setEditMode}
-                                 setEndCounter={setEndCounter}
-                                 setError={setError}
-                    />
+        <HashRouter>
+            <div className="App">
+                <div className={'menuNav'}>
+                    <NavLink to={'/variantone'} className={`menuNav__link`}>Variant One</NavLink>
+                    <NavLink to={'/varianttwo'} className={`menuNav__link`}>Variant Two</NavLink>
                 </div>
+                <div className="App-header">
+                    <Route path={'/variantone'} render={() => <VariantOne
+                        setStartValue={setStartValue}
+                        editMode={editMode}
+                        error={error}
+                        endCounter={endCounter}
+                        setStartCounter={setStartCounter}
+                        setEditMode={setEditMode}
+                        setEndCounter={setEndCounter}
+                        setError={setError}
+                        startValue={startValue}
+                        onIncrementHandler={onIncrementHandler}
+                        onResetHandler={onResetHandler}
+                        limitReached={limitReached}
+                        startCounter={startCounter}
+                    />}/>
 
-                <div className="wrapper-block">
-                    <Counter startCounter={startCounter}
-                             editMode={editMode}
-                             error={error}
-                             limitReached={limitReached}
-                             startValue={startValue}
-                             onIncrementHandler={onIncrementHandler}
-                             onResetHandler={onResetHandler}
-                    />
+                    <Route path={'/varianttwo'} render={() => <VariantTwo
+                        setStartValue={setStartValue}
+                        editMode={editMode}
+                        error={error}
+                        endCounter={endCounter}
+                        setStartCounter={setStartCounter}
+                        setEditMode={setEditMode}
+                        setEndCounter={setEndCounter}
+                        setError={setError}
+                        startValue={startValue}
+                        onIncrementHandler={onIncrementHandler}
+                        onResetHandler={onResetHandler}
+                        limitReached={limitReached}
+                        startCounter={startCounter}
+                    />}/>
                 </div>
-
             </div>
-        </div>
+        </HashRouter>
     );
 }
 

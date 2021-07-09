@@ -2,9 +2,9 @@
     text-align: center;
 }
 
-.App-header {
+.wrapper-counter {
     background-color: #282c34;
-    min-height: 100vh;
+    min-height: 95vh;
     display: flex;
     flex-direction: row;
     gap: 100px;
@@ -19,4 +19,34 @@
     border: 4px solid #004f92;
     border-radius: 5px;
     padding: 10px;
+}
+
+.menuNav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    background-color: #004f92;
+    color: #282c34;
+    height: 5vh;
+    overflow: hidden;
+}
+
+.menuNav__link {
+    position: relative;
+    color: #cacaca;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.menuNav__link.active::before {
+    position: absolute;
+    content: '\27A4';
+    top: 18px;
+    left: 45%;
+    transform: rotate(-90deg);
+}
+
+.menuNav__link:hover {
+    color: #ffffff;
 }

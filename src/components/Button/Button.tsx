@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import styles from './Button.module.css';
 
 type PropsType = {
-    disabled: boolean
+    disabled?: boolean
     onClick: () => void
 }
 
