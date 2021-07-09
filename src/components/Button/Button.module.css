@@ -1,0 +1,23 @@
+.button {
+    background-color: #004f92;
+    color: #ccc;
+    border: 1px solid #4e4e4e;
+    border-radius: 5px;
+    padding: 2px 10px;
+    font-size: 2rem;
+    cursor: pointer;
+}
+.button:disabled {
+    background-color: #474747;
+    color: #929292;
+}
+.button:hover:disabled {
+    background-color: #474747;
+    color: #929292;
+    cursor: not-allowed;
+}
+
+.button:hover {
+    background-color: #006ec6;
+    color: #fff
+}
