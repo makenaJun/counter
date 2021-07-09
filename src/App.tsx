@@ -42,11 +42,11 @@ function App() {
         <HashRouter>
             <div className="App">
                 <div className={'menuNav'}>
-                    <NavLink to={'/variantone'} className={`menuNav__link`}>Variant One</NavLink>
+                    <NavLink exact to={'/'} className={`menuNav__link`}>Variant One</NavLink>
                     <NavLink to={'/varianttwo'} className={`menuNav__link`}>Variant Two</NavLink>
                 </div>
                 <div className="App-header">
-                    <Route path={'/variantone'} render={() => <VariantOne
+                    <Route exact path={'/'} render={() => <VariantOne
                         setStartValue={setStartValue}
                         editMode={editMode}
                         error={error}
