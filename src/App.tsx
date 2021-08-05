@@ -1,11 +1,11 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import './App.css';
 import {HashRouter, NavLink, Route} from 'react-router-dom';
 import {VariantOne} from './VariantOne';
 import {VariantTwo} from './VariantTwo';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from './redux/store';
-import {incrementCounter, resetCounter, setCurrentValue, setMaxValue, setStartValue} from './redux/counter-reducer';
+import {incrementCounter, resetCounter,} from './redux/counter-reducer';
 
 export type CounterVariantType = 'ONE' | 'TWO';
 
@@ -20,21 +20,7 @@ function App() {
     const [editMode, setEditMode] = useState<boolean>(false);
 
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        const startValueWithLocalStorage = localStorage.getItem('startValue');
-        const maxValueWithLocalStorage = localStorage.getItem('maxValue');
-        if (startValueWithLocalStorage && maxValueWithLocalStorage) {
-            dispatch(setCurrentValue(Number(startValueWithLocalStorage)));
-            dispatch(setStartValue(Number(startValueWithLocalStorage)));
-            dispatch(setMaxValue(Number(maxValueWithLocalStorage)));
-        }
-    }, [dispatch])
-
-    useEffect(() => {
-        localStorage.setItem('startValue', startValue.toString());
-        localStorage.setItem('maxValue', maxValue.toString());
-    }, [maxValue, startValue])
+    
 
     const onIncrementHandler = useCallback(() => {
         dispatch(incrementCounter());
