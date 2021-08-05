@@ -4,62 +4,53 @@ import {Counter} from './components/Counter/Counter';
 import './App.css';
 
 type PropsType = {
-    startValue: number
-    startCounter: number
-    error: boolean
-    editMode: boolean
-    endCounter: number
-    limitReached: boolean
-    onIncrementHandler: () => void
-    onResetHandler: () => void
-    setStartValue: (value: number) => void
-    setStartCounter: (value: number) => void
-    setEditMode: (value: boolean) => void
-    setError: (value: boolean) => void
-    setEndCounter: (value: number) => void
-}
+    startValue: number,
+    currentValue: number,
+    error: boolean,
+    editMode: boolean,
+    maxValue: number,
+    limitReached: boolean,
+    setEditMode: (value: boolean) => void,
+    onIncrementHandler: () => void,
+    onResetHandler: () => void,
+};
 
 export const VariantOne: FC<PropsType> = (props) => {
     const {
         startValue,
+        currentValue,
         editMode,
         error,
-        startCounter,
         limitReached,
         onResetHandler,
         onIncrementHandler,
-        setStartValue,
-        setStartCounter,
         setEditMode,
-        setError,
-        endCounter,
-        setEndCounter
+        maxValue,
     } = props;
+
+    const VARIANT = 'ONE';
+
     return (<div className="wrapper-counter">
         <div className="wrapper-block">
             <ValueEditor startValue={startValue}
                          error={error}
-                         setStartValue={setStartValue}
                          editMode={editMode}
-                         endCounter={endCounter}
-                         setStartCounter={setStartCounter}
                          setEditMode={setEditMode}
-                         setEndCounter={setEndCounter}
-                         setError={setError}
+                         maxValue={maxValue}
             />
         </div>
 
         <div className="wrapper-block">
-            <Counter startCounter={startCounter}
+            <Counter currentValue={currentValue}
                      editMode={editMode}
                      error={error}
                      limitReached={limitReached}
                      startValue={startValue}
                      onIncrementHandler={onIncrementHandler}
                      onResetHandler={onResetHandler}
-                     variant={'ONE'}
+                     variant={VARIANT}
                      setEditMode={setEditMode}
             />
         </div>
     </div>)
-}
+};

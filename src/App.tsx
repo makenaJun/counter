@@ -3,39 +3,45 @@ import './App.css';
 import {HashRouter, NavLink, Route} from 'react-router-dom';
 import {VariantOne} from './VariantOne';
 import {VariantTwo} from './VariantTwo';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppStateType} from './redux/store';
+import {incrementCounter, resetCounter, setCurrentValue, setMaxValue, setStartValue} from './redux/counter-reducer';
 
 export type CounterVariantType = 'ONE' | 'TWO';
 
 function App() {
-    const [startCounter, setStartCounter] = useState<number>(0);
-    const [endCounter, setEndCounter] = useState<number>(5);
-    const [startValue, setStartValue] = useState<number>(startCounter);
+    const currentValue = useSelector<AppStateType, number>(state => state.counter.currentValue);
+    const maxValue = useSelector<AppStateType, number>(state => state.counter.maxValue);
+    const startValue = useSelector<AppStateType, number>(state => state.counter.startValue);
+    const error = useSelector<AppStateType, boolean>(state => state.counter.error);
+
+    const limitReached = currentValue === maxValue;
 
     const [editMode, setEditMode] = useState<boolean>(false);
-    const [error, setError] = useState<boolean>(false);
 
-    const limitReached = startCounter === endCounter;
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        const startValueLocal = localStorage.getItem('startValue');
-        const endCounterLocal = localStorage.getItem('endCounter');
-        if (startValueLocal && endCounterLocal) {
-            setStartCounter(Number(startValueLocal));
-            setStartValue(Number(startValueLocal));
-            setEndCounter(Number(endCounterLocal));
+        const startValueWithLocalStorage = localStorage.getItem('startValue');
+        const maxValueWithLocalStorage = localStorage.getItem('maxValue');
+        if (startValueWithLocalStorage && maxValueWithLocalStorage) {
+            dispatch(setCurrentValue(Number(startValueWithLocalStorage)));
+            dispatch(setStartValue(Number(startValueWithLocalStorage)));
+            dispatch(setMaxValue(Number(maxValueWithLocalStorage)));
         }
-    }, [])
+    }, [dispatch])
+
     useEffect(() => {
         localStorage.setItem('startValue', startValue.toString());
-        localStorage.setItem('endCounter', endCounter.toString());
-    }, [endCounter, startValue])
+        localStorage.setItem('maxValue', maxValue.toString());
+    }, [maxValue, startValue])
 
     const onIncrementHandler = useCallback(() => {
-        setStartCounter((prev) => prev + 1)
-    }, []);
+        dispatch(incrementCounter());
+    }, [dispatch]);
     const onResetHandler = useCallback(() => {
-        setStartCounter(startValue);
-    }, [startValue]);
+        dispatch(resetCounter());
+    }, [dispatch]);
 
 
     return (
@@ -47,40 +53,32 @@ function App() {
                 </div>
                 <div className="App-header">
                     <Route exact path={'/'} render={() => <VariantOne
-                        setStartValue={setStartValue}
                         editMode={editMode}
                         error={error}
-                        endCounter={endCounter}
-                        setStartCounter={setStartCounter}
+                        maxValue={maxValue}
                         setEditMode={setEditMode}
-                        setEndCounter={setEndCounter}
-                        setError={setError}
                         startValue={startValue}
                         onIncrementHandler={onIncrementHandler}
                         onResetHandler={onResetHandler}
                         limitReached={limitReached}
-                        startCounter={startCounter}
+                        currentValue={currentValue}
                     />}/>
 
                     <Route path={'/varianttwo'} render={() => <VariantTwo
-                        setStartValue={setStartValue}
                         editMode={editMode}
                         error={error}
-                        endCounter={endCounter}
-                        setStartCounter={setStartCounter}
                         setEditMode={setEditMode}
-                        setEndCounter={setEndCounter}
-                        setError={setError}
                         startValue={startValue}
                         onIncrementHandler={onIncrementHandler}
                         onResetHandler={onResetHandler}
                         limitReached={limitReached}
-                        startCounter={startCounter}
+                        currentValue={currentValue}
+                        maxValue={maxValue}
                     />}/>
                 </div>
             </div>
         </HashRouter>
     );
-}
+};
 
 export default App;

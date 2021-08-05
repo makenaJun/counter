@@ -1,50 +1,46 @@
-import React, {ChangeEvent, FC} from 'react';
+import React, {ChangeEvent, FC, useCallback} from 'react';
 import {Button} from '../Button/Button';
 import styles from './ValueEditor.module.css'
+import {useDispatch} from 'react-redux';
+import {setCurrentValue, setError, setMaxValue, setStartValue} from '../../redux/counter-reducer';
 
 type PropsType = {
-    startValue: number
-    endCounter: number
-    editMode: boolean
-    error: boolean
-    setEditMode: (value: boolean) => void
-    setStartValue: (value: number) => void
-    setStartCounter: (value: number) => void
-    setEndCounter: (value: number) => void
-    setError: (value: boolean) => void
-}
+    startValue: number,
+    maxValue: number,
+    editMode: boolean,
+    error: boolean,
+    setEditMode: (value: boolean) => void,
+};
 
 export const ValueEditor: FC<PropsType> = (props) => {
     const {
         error,
         editMode,
         startValue,
-        endCounter,
+        maxValue,
         setEditMode,
-        setStartValue,
-        setStartCounter,
-        setEndCounter,
-        setError
     } = props;
+
+    const dispatch = useDispatch();
 
     const onChangeStartValue = (event: ChangeEvent<HTMLInputElement>) => {
         const value = +event.currentTarget.value;
-        if (value >= endCounter || value < 0) return setError(true);
-        error && setError(false);
+        if (value >= maxValue || value < 0) return dispatch(setError(true));
+        error && dispatch(setError(false));
         setEditMode(true);
-        setStartValue(value);
+        dispatch(setStartValue(value));
     };
     const onChangeMaxValue = (event: ChangeEvent<HTMLInputElement>) => {
         const value = +event.currentTarget.value;
-        if (value <= startValue) return setError(true);
-        error && setError(false);
+        if (value <= startValue) return dispatch(setError(true));
+        error && dispatch(setError(false));
         setEditMode(true);
-        setEndCounter(value);
+        dispatch(setMaxValue(value));
     };
-    const onClickHandler = () => {
-        setStartCounter(startValue)
-        setEditMode(false)
-    }
+    const onClickHandler = useCallback(() => {
+        dispatch(setCurrentValue(startValue));
+        setEditMode(false);
+    }, [dispatch, startValue, setEditMode]);
 
 
     return (<div>
@@ -57,7 +53,7 @@ export const ValueEditor: FC<PropsType> = (props) => {
             </div>
             <div>Max value: <input type="number"
                                    className={`${styles.input} ${error ? styles.errorInput : ''}`}
-                                   value={endCounter}
+                                   value={maxValue}
                                    onChange={onChangeMaxValue}/>
             </div>
         </div>
@@ -65,4 +61,4 @@ export const ValueEditor: FC<PropsType> = (props) => {
             <Button onClick={onClickHandler} disabled={!editMode || error}>set</Button>
         </div>
     </div>)
-}
+};
