@@ -12,7 +12,7 @@ Counter is a counter application. The next time you start the application, all s
 
 ### `Technologies`
 
-I used React, Redux, React-Router-Dom and Jest libraries.
+I used React, Redux, TypeScript, React-Router-Dom and Jest libraries.
 
 ### `Setup`
 
